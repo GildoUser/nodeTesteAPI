@@ -16,7 +16,10 @@ class Customers{
     getOne(id){
         return new Promise((resolve, reject)=>{
             db.get('SELECT * FROM customers WHERE id = ?',[id], (err, customer)=>{
-                if(err) return reject(err);
+                if(err){
+                    console.error("Customers.getOne() =>", err.message);
+                    return reject(err);
+                };
                 if(!customer) resolve(null)
                 resolve(customer);
             })

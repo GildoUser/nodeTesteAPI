@@ -1,22 +1,22 @@
 const customersService = require('../service/CustomersService');
 
 class CustomersController{
-    async getAll(req, res){
+    async getAll(req, res, next){
         try{
             const allCustomers = await customersService.getAll();
             res.status(200).json({allCustomers});
         }catch(err){
-            res.status(500).json({error: err.message});
+            next(err)
         }
     }
 
-    async getOne(req, res){
+    async getOne(req, res, next){
         try{
             const customer = await customersService.getOne(req.params.id);
             if(!customer) res.status(404).json({message: "nada foi encontrado"})
             res.status(200).json({customer});
         }catch(err){
-            res.status(500).json({error: err.message})
+            next(err)
         }
     }
 

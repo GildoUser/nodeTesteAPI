@@ -7,6 +7,7 @@ class App{
         this.server = express();
         this.middlewares();
         this.router(routes);
+        this.exceptionHandler();
     }
 
     router(routes){
@@ -15,7 +16,16 @@ class App{
 
     middlewares(){
         this.server.use(express.json());
-        this.server.use(morgan());
+       // this.server.use(morgan());
+
+    }
+    
+    exceptionHandler(){
+        console.log("erro aqui")
+        this.server.use((err, req, res, next)=>{
+            res.status(err.status || 500).json({error: err.message})
+        })
+        
     }
 }
 
