@@ -40,9 +40,9 @@ class CustomersController{
             const id = validateId(req.params.id);
             const updatedCustomer = await customersService.updateCustomer(id, req.body);
             if(!updatedCustomer){
-                const error = new Error("não foi encontrado");
-                error.status = 404;
-                return next(error);
+                const newError = new Error("não foi encontrado");
+                newError.status = 404;
+                return next(newError);
             } 
             res.status(200).json({updatedCustomer})
         }catch(err){

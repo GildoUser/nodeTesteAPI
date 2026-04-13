@@ -31,6 +31,31 @@ class ProductsController{
             next(err)
         }
     }
+
+    async updateProduct(req, res, next){
+        try{
+            const id = validateId(req.params.id);
+            const updatedProduct = await productsService.updateProduct(id, req.body);
+            if(!updatedProduct){
+                const newError = new Error("não foi encontrado");
+                newError.status = 404;
+                return next(newError)
+            }
+            res.status(200).json({updatedProduct})
+        }catch(err){
+            next(err)
+        }
+    }
+
+    async deleteProduct(req, res, next){
+        try{
+            const id = validateId(req.params.id);
+            const confirmation = await productsService.deleteProduct(id);
+            res.status(200).json({message: `${confirmation} linha(s) apagada(s)!`})
+        }catch(err){
+            next(err)
+        }
+    }
 }
 
 module.exports = new ProductsController();

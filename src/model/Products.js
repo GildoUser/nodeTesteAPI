@@ -29,6 +29,25 @@ class Products{
                 });
         });
     }
+
+    updateProduct(data, id){
+        return new Promise((resolve, reject)=>{
+            db.run(`UPDATE products SET name = ?, price = ?, description = ? 
+                WHERE id = ? `, [data.name, data.price, data.description, id], function(err){
+                    if(err) return reject(err);
+                    resolve({id: id, ...data})
+            })
+        })
+    }
+
+    deleteProduct(id){
+        return new Promise((resolve, reject)=>{
+            db.run('DELETE FROM products WHERE id = ?',[id], function(err){
+                if(err) return reject(err);
+                resolve(this.changes);
+            })
+        })
+    }
 }
 
 module.exports = new Products();
