@@ -1,5 +1,5 @@
 const express = require('express');
-const routes = require('./routes/routes');
+const routes = require('./routes/index');
 const morgan = require('morgan');
 
 class App{
@@ -21,7 +21,6 @@ class App{
     }
     
     exceptionHandler(){
-        console.log("erro aqui")
         this.server.use((err, req, res, next)=>{
             res.status(err.status || 500).json({error: err.message})
         })

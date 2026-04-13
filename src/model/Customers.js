@@ -6,7 +6,7 @@ class Customers{
             db.all('SELECT * FROM customers', (err, allCustomers)=>{
                 if(err){
                     console.error("Customers.getAll() =>", err.message);
-                    reject(err);
+                    return reject(err);
                 }
                     resolve(allCustomers);
             })

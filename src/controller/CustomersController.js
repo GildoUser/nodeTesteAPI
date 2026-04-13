@@ -1,4 +1,5 @@
-const customersService = require('../service/CustomersService');
+const customersService = require('../service/customers.service');
+const validateId = require('../validators/id.validator')
 
 class CustomersController{
     async getAll(req, res, next){
@@ -12,39 +13,50 @@ class CustomersController{
 
     async getOne(req, res, next){
         try{
-            const customer = await customersService.getOne(req.params.id);
-            if(!customer) res.status(404).json({message: "nada foi encontrado"})
+            const id = validateId(req.params.id);
+            const customer = await customersService.getOne(id);
+            if(!customer){
+                const error = new Error("nada foi encontrado");
+                error.status = 404;
+                return next(error);
+            }
             res.status(200).json({customer});
         }catch(err){
-            next(err)
+            next(err);
         }
     }
 
-    async createCustomer(req, res){
+    async createCustomer(req, res, next){
         try{
             const customer = await customersService.createCustomer(req.body);
             res.status(201).json({message: "criado com sucesso", customer})
         }catch(err){
-        res.status(500).json({error: err.message})
+            next(err);
        }
     }
 
-    async updateCustomer(req, res){
+    async updateCustomer(req, res, next){
         try{
-            const updatedCustomer = await customersService.updateCustomer(req.params.id, req.body);
-            if(!updatedCustomer) return res.status(404).json({message: "não foi encontrado"})
+            const id = validateId(req.params.id);
+            const updatedCustomer = await customersService.updateCustomer(id, req.body);
+            if(!updatedCustomer){
+                const error = new Error("não foi encontrado");
+                error.status = 404;
+                return next(error);
+            } 
             res.status(200).json({updatedCustomer})
         }catch(err){
-            res.status(500).json({error: err.message})
+            next(err);
         }
     }
     
-    async deleteCustomer(req, res){
+    async deleteCustomer(req, res, next){
         try{
-            const confirmation = await customersService.deleteCustomer(req.params.id);
-            res.status(200).json({message: `sucesso! ${confirmation} linha(s) apagada(s)`})
+            const id = validateId(req.params.id);
+            const confirmation = await customersService.deleteCustomer(id);
+            res.status(200).json({message: `${confirmation} linha(s) apagada(s)!`})
         }catch(err){
-            res.status(500).json({error: err.message})
+            next(err);
         }
     }
 }
