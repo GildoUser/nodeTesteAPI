@@ -28,7 +28,7 @@ class ProductsController{
              const product = await productsService.createProduct(req.body);
              res.status(201).json({product});
         }catch(err){
-            next(err)
+            next(err);
         }
     }
 
@@ -39,11 +39,11 @@ class ProductsController{
             if(!updatedProduct){
                 const newError = new Error("não foi encontrado");
                 newError.status = 404;
-                return next(newError)
+                return next(newError);
             }
-            res.status(200).json({updatedProduct})
+            res.status(200).json({updatedProduct});
         }catch(err){
-            next(err)
+            next(err);
         }
     }
 
@@ -53,7 +53,7 @@ class ProductsController{
             const confirmation = await productsService.deleteProduct(id);
             res.status(200).json({message: `${confirmation} linha(s) apagada(s)!`})
         }catch(err){
-            next(err)
+            next(err);
         }
     }
 }
