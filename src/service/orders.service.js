@@ -16,16 +16,16 @@ async function getOne(id){
     return customer;
 }
 
-async function createOrder(id){
-    const customer = await customersService.getOne(id);
+async function createOrder(orderService){
+    const customer = await customersService.getOne(orderService.customer_id);
     if(!customer){
         const error = new Error("customer não encontrado");
         error.status = 404;
         throw error
     }
-    const order = await orders.createOrder(id);
+    const order = await orders.createOrder(orderService);
 
-    return {id:order, customer_id: id}
+    return order;
 
 }
 

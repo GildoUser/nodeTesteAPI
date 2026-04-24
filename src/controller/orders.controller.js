@@ -22,9 +22,9 @@ async function getOne(req, res, next){
 
 async function createOrder(req, res, next){
     try{
-        const id = validateId(req.params.customer_id);
-        const order = await ordersService.createOrder(id);
-
+        
+        const order = await ordersService.createOrder(req.body);
+        
         res.status(201).json({message: "order criada com sucesso", order});
     }catch(err){
         console.log("oi")

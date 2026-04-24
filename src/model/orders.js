@@ -23,12 +23,19 @@ function getOne(id){
     });
 }
 
-function createOrder(customer_id){
+function createOrder(orderService){
+    const order_id;
     return new Promise((resolve, reject)=>{
-        db.run('INSERT INTO orders (customer_id) VALUES (?)', [customer_id], function(err){
-            if(err) return reject(err);
-            resolve(this.lastID);
-        })
+        db.serialize(()=>{
+                        
+            db.run(`INSERT INTO orders (customer_id) VALUES (?)`,
+                [orderService.customer_id], function(err){
+                if(err) return reject(err);
+            })
+
+            db.run(``)
+
+        });
     });
 }
 
