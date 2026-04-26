@@ -15,11 +15,7 @@ class CustomersController{
         try{
             const id = validateId(req.params.id);
             const customer = await customersService.getOne(id);
-            if(!customer){
-                const error = new Error("nada foi encontrado");
-                error.status = 404;
-                return next(error);
-            }
+
             res.status(200).json({customer});
         }catch(err){
             next(err);

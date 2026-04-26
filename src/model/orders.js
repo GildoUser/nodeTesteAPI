@@ -24,16 +24,34 @@ function getOne(id){
 }
 
 function createOrder(orderService){
-    const order_id;
+    if(orderService.order_items.length == 0){
+        throw new Error('order sem itens')
+    }
     return new Promise((resolve, reject)=>{
         db.serialize(()=>{
                         
             db.run(`INSERT INTO orders (customer_id) VALUES (?)`,
                 [orderService.customer_id], function(err){
                 if(err) return reject(err);
-            })
 
-            db.run(``)
+                const order_id = this.lastID;
+                let itemsProcessed = 0;
+                
+                orderService.order_items.forEach(product =>{
+                    db.run(`INSERT INTO orders_items (
+                        order_id, product_id, quantity, unity_price
+                        ) VALUES (?,?,?,?)`, [order_id, product.product_id, product.quantity, product.unity_price], function(err){
+                            if(err) return reject(err);
+                            itemsProcessed ++;
+
+                            if (itemsProcessed == orderService.order_items.length) resolve(order_id)
+                        })
+                    })
+                })
+
+            
+
+            
 
         });
     });

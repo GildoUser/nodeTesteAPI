@@ -8,6 +8,12 @@ async function getAll(){
 
 async function getOne(id){
     const customer = await customers.getOne(id);
+        if(!customer){
+            const error = new Error("nada foi encontrado");
+            error.status = 404;
+            return next(error);
+        }
+    
     return customer;
 }
 
