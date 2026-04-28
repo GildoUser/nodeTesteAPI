@@ -23,6 +23,17 @@ function getOne(id){
     });
 }
 
+function getFullOrder(id){
+    return new Promise((resolve, reject)=>{
+        db.all(`SELECT o.id, o.customer_id, o.created_at, o.status, 
+            o_i.order_id, o_i.product_id FROM orders as o INNER JOIN orders_items as o_i on o.id = o_i.order_id WHERE o.id = ?`,[id], function(err, orders){
+            if(err) return reject(err);
+            resolve(orders);
+
+        })
+    });
+}
+
 function createOrder(orderService){
     if(orderService.order_items.length == 0){
         throw new Error('order sem itens')
@@ -61,4 +72,5 @@ module.exports = {
     getAll,
     getOne,
     createOrder,
+    getFullOrder
 }

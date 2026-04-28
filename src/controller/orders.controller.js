@@ -23,8 +23,8 @@ async function getOne(req, res, next){
 async function getFullOrder(req, res, next){
     try{
         const id = validateId(req.params.id);
-        const FullOrder = await ordersService.getFullOrder(id);
-        res.status(200).json({FullOrder})
+        const fullOrder = await ordersService.getFullOrder(id);
+        res.status(200).json({fullOrder})
     }catch(err){
         next(err);
     }

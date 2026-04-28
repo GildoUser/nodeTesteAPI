@@ -8,16 +8,18 @@ async function getAll(){
 }
 
 async function getOne(id){
-    const customer = await orders.getOne(id);
-    if(!customer){
+    const order = await orders.getOne(id);
+    if(!order){
         const error = new Error("order não encontrada");
         error.status(404);
         return error
     }
-    return customer;
+    return order;
 }
 
 async function getFullOrder(id){
+    const full_order = await orders.getFullOrder(id);
+    return full_order;
 
 }
 
