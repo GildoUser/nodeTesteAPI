@@ -35,7 +35,8 @@ async function createOrder(req, res, next){
         const order = await ordersService.createOrder(req.body);
         res.status(201).json({message: "order criada com sucesso", order});
     }catch(err){
-        console.log("oi")
+
+        console.log(err.message)
         next(err);
     }
 }

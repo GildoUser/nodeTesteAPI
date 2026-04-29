@@ -25,10 +25,15 @@ function getOne(id){
 
 function getFullOrder(id){
     return new Promise((resolve, reject)=>{
-        db.all(`SELECT o.id, o.customer_id, o.created_at, o.status, 
-            o_i.order_id, o_i.product_id FROM orders as o INNER JOIN orders_items as o_i on o.id = o_i.order_id WHERE o.id = ?`,[id], function(err, orders){
+        db.all(`SELECT orders.customer_id, orders.created_at, orders.status,
+            o_items.product_id, o_items.quantity, o_items.unity_price,
+            p.name, p.price
+            FROM orders 
+            INNER JOIN orders_items as o_items on orders.id = o_items.order_id
+            INNER JOIN products as p on o_items.product_id = p.id
+            WHERE orders.id = ?`,[id], function(err, orders){
             if(err) return reject(err);
-            resolve(orders);
+            resolve({order_id: id, order_items: orders});
 
         })
     });
@@ -36,7 +41,10 @@ function getFullOrder(id){
 
 function createOrder(orderService){
     if(orderService.order_items.length == 0){
-        throw new Error('order sem itens')
+        const error = new Error('order sem itens');
+        error.status = 400;
+        throw error;
+
     }
     return new Promise((resolve, reject)=>{
         db.serialize(()=>{
