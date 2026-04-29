@@ -45,6 +45,12 @@ async function updateCustomer(id, rawData){
 
 async function deleteCustomer(id){
     const resultDeleted = await customers.deleteCustomer(id);
+    console.log(resultDeleted)
+    if(resultDeleted ==0){
+        const error = new Error("customer não encontrado");
+        error.status = 404;
+        throw error;
+    }
     return resultDeleted;
 
 }

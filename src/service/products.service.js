@@ -42,6 +42,11 @@ class ProductsService{
 
     async deleteProduct(id){
         const resultDeleted = await products.deleteProduct(id);
+        if(resultDeleted ==0){
+            const error = new Error("produto não encontrado");
+            error.status = 404;
+            throw error;
+        }
         return resultDeleted;
     }
 }

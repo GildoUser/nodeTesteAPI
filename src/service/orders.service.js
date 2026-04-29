@@ -39,9 +39,6 @@ async function getFullOrder(id){
         })
     }
 
-
-    console.log(processed_full_order)
-
     return processed_full_order;
 
 }
